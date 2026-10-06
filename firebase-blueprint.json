@@ -1,0 +1,142 @@
+{
+  "entities": {
+    "WorldState": {
+      "title": "WorldState",
+      "description": "Global state of the Evara living world simulation.",
+      "type": "object",
+      "properties": {
+        "day": { "type": "number", "description": "Current simulation day" },
+        "hour": { "type": "number", "description": "Current simulation hour 0-23" },
+        "minute": { "type": "number", "description": "Current simulation minute 0-59" },
+        "weather": { "type": "string", "description": "Current atmospheric weather" },
+        "activeEvent": { "type": "string", "description": "Current prevailing world event or null" },
+        "tickCount": { "type": "number", "description": "Total ticks elapsed" },
+        "speed": { "type": "number", "description": "Simulation speed multiplier" },
+        "isPaused": { "type": "boolean", "description": "Whether world clock is paused" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["day", "hour", "minute", "weather", "tickCount"]
+    },
+    "Character": {
+      "title": "Character",
+      "description": "An autonomous inhabitant of Evara with unique identity, state, and brain configuration.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Character display name", "maxLength": 60 },
+        "title": { "type": "string", "description": "Title or occupation", "maxLength": 60 },
+        "bio": { "type": "string", "description": "Backstory and origin", "maxLength": 500 },
+        "personality": { "type": "string", "description": "Personality traits, mannerisms, drives", "maxLength": 500 },
+        "avatarColor": { "type": "string", "description": "Theme color code for UI representation" },
+        "locationId": { "type": "string", "description": "Current location ID in the world" },
+        "latitude": { "type": "number", "description": "Real Earth latitude coordinate (-90 to +90)" },
+        "longitude": { "type": "number", "description": "Real Earth longitude coordinate (-180 to +180)" },
+        "city": { "type": "string", "description": "Real world city name" },
+        "country": { "type": "string", "description": "Real world country name" },
+        "ianaTimezone": { "type": "string", "description": "IANA timezone identifier (e.g. Asia/Tokyo, Europe/Zurich)" },
+        "status": { "type": "string", "description": "Current status: awake, thinking, talking, resting, sleeping, quota_sleeping, in_transit" },
+        "energy": { "type": "number", "description": "Current energy 0 to 100" },
+        "social": { "type": "number", "description": "Social fulfillment 0 to 100" },
+        "purpose": { "type": "number", "description": "Purpose fulfillment 0 to 100" },
+        "currentGoal": { "type": "string", "description": "Primary short-term goal", "maxLength": 200 },
+        "currentAction": { "type": "string", "description": "Current activity description", "maxLength": 200 },
+        "brainConfig": { "type": "object", "description": "Separate AI brain setup (model, quota, provider)" },
+        "lastActionTick": { "type": "number", "description": "World tick of last action" },
+        "ownerId": { "type": "string", "description": "User ID who created/supervises this character" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["name", "title", "locationId", "status", "energy", "social", "purpose"]
+    },
+    "Memory": {
+      "title": "Memory",
+      "description": "An episodic memory recorded by a character, scored for importance and retrieval relevance.",
+      "type": "object",
+      "properties": {
+        "characterId": { "type": "string", "description": "Owner character ID" },
+        "worldTime": { "type": "string", "description": "World timestamp string, e.g. Day 1 09:30" },
+        "tick": { "type": "number", "description": "Tick at which memory formed" },
+        "content": { "type": "string", "description": "Textual memory content", "maxLength": 800 },
+        "type": { "type": "string", "description": "observation, dialogue, decision, reflection, interaction" },
+        "importance": { "type": "number", "description": "Subjective importance score 1 to 10" },
+        "tags": { "type": "array", "description": "Keywords and topical tags" },
+        "locationId": { "type": "string", "description": "Location where memory occurred" },
+        "relatedCharacterIds": { "type": "array", "description": "Other characters involved" },
+        "createdAt": { "type": "string", "description": "ISO creation timestamp" }
+      },
+      "required": ["characterId", "content", "type", "importance"]
+    },
+    "Relationship": {
+      "title": "Relationship",
+      "description": "Dynamic bond between two characters in Evara.",
+      "type": "object",
+      "properties": {
+        "characterId": { "type": "string", "description": "Primary character" },
+        "targetCharacterId": { "type": "string", "description": "Target character" },
+        "affinity": { "type": "number", "description": "Affinity score -100 to 100" },
+        "trust": { "type": "number", "description": "Trust score 0 to 100" },
+        "status": { "type": "string", "description": "Relationship label: stranger, acquaintance, friend, rival, confidant" },
+        "lastInteraction": { "type": "string", "description": "Summary of last interaction", "maxLength": 300 },
+        "updatedAt": { "type": "string", "description": "Last updated timestamp" }
+      },
+      "required": ["characterId", "targetCharacterId", "affinity", "trust", "status"]
+    },
+    "Location": {
+      "title": "Location",
+      "description": "A district or place in the text-based simulated world.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of location", "maxLength": 60 },
+        "district": { "type": "string", "description": "District or zone" },
+        "description": { "type": "string", "description": "Detailed sensory description", "maxLength": 500 },
+        "atmosphere": { "type": "string", "description": "Atmospheric mood", "maxLength": 200 },
+        "connectedLocationIds": { "type": "array", "description": "Accessible adjacent locations" },
+        "items": { "type": "array", "description": "Interactive objects and resources available" },
+        "capacity": { "type": "number", "description": "Maximum character capacity" }
+      },
+      "required": ["name", "description"]
+    },
+    "WorldEvent": {
+      "title": "WorldEvent",
+      "description": "A broadcast log of a validated action, conversation, or environmental occurrence.",
+      "type": "object",
+      "properties": {
+        "tick": { "type": "number", "description": "World tick count" },
+        "worldTime": { "type": "string", "description": "World time label, e.g. Day 1, 14:15" },
+        "characterId": { "type": "string", "description": "Actor character ID if applicable" },
+        "characterName": { "type": "string", "description": "Actor display name" },
+        "locationId": { "type": "string", "description": "Location ID where it transpired" },
+        "locationName": { "type": "string", "description": "Location name" },
+        "type": { "type": "string", "description": "action, dialogue, move, rest, environmental, reflect" },
+        "headline": { "type": "string", "description": "Concise event summary", "maxLength": 200 },
+        "details": { "type": "string", "description": "Full narrative description", "maxLength": 800 },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["tick", "worldTime", "type", "headline", "details"]
+    }
+  },
+  "firestore": {
+    "/world/{worldId}": {
+      "schema": "WorldState",
+      "description": "Global world simulation state document (clock, weather, tick)"
+    },
+    "/characters/{characterId}": {
+      "schema": "Character",
+      "description": "Autonomous living characters in Evara"
+    },
+    "/characters/{characterId}/memories/{memoryId}": {
+      "schema": "Memory",
+      "description": "Subcollection of character memories for partitioned retrieval"
+    },
+    "/characters/{characterId}/relationships/{targetCharacterId}": {
+      "schema": "Relationship",
+      "description": "Relationships of a character toward others"
+    },
+    "/locations/{locationId}": {
+      "schema": "Location",
+      "description": "Places and zones in the living world"
+    },
+    "/events/{eventId}": {
+      "schema": "WorldEvent",
+      "description": "Chronicle of world events and simulated actions"
+    }
+  }
+}

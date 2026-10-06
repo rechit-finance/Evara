@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // World state: Readable by anyone (public living world view) or signed-in users.
+    // Writes allowed by signed-in users with bounded valid values.
+    match /world/{worldId} {
+      allow read: if true;
+      allow create, update: if isSignedIn()
+        && isValidId(worldId)
+        && request.resource.data.day is number && request.resource.data.day >= 1
+        && request.resource.data.hour is number && request.resource.data.hour >= 0 && request.resource.data.hour <= 23
+        && request.resource.data.minute is number && request.resource.data.minute >= 0 && request.resource.data.minute <= 59
+        && request.resource.data.weather is string && request.resource.data.weather.size() <= 64;
+    }
+
+    // Locations: Read by anyone, create/update with bounds
+    match /locations/{locationId} {
+      allow read: if true;
+      allow write: if isSignedIn()
+        && isValidId(locationId)
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.description is string && request.resource.data.description.size() <= 1000;
+    }
+
+    // Characters in Evara
+    match /characters/{characterId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && isValidId(characterId)
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && request.resource.data.energy is number && request.resource.data.energy >= 0 && request.resource.data.energy <= 100
+        && request.resource.data.social is number && request.resource.data.social >= 0 && request.resource.data.social <= 100
+        && request.resource.data.purpose is number && request.resource.data.purpose >= 0 && request.resource.data.purpose <= 100
+        && request.resource.data.status in ['awake', 'thinking', 'talking', 'working', 'sleeping', 'quota_sleeping', 'resting', 'in_transit'];
+      
+      allow update: if isSignedIn()
+        && isValidId(characterId)
+        && request.resource.data.energy is number && request.resource.data.energy >= 0 && request.resource.data.energy <= 100
+        && request.resource.data.social is number && request.resource.data.social >= 0 && request.resource.data.social <= 100
+        && request.resource.data.purpose is number && request.resource.data.purpose >= 0 && request.resource.data.purpose <= 100
+        && request.resource.data.status in ['awake', 'thinking', 'talking', 'working', 'sleeping', 'quota_sleeping', 'resting', 'in_transit'];
+
+      allow delete: if isSignedIn() && isValidId(characterId);
+
+      // Character memories subcollection
+      match /memories/{memoryId} {
+        allow read: if true;
+        allow create, update: if isSignedIn()
+          && isValidId(memoryId)
+          && request.resource.data.content is string && request.resource.data.content.size() <= 1200
+          && request.resource.data.importance is number && request.resource.data.importance >= 1 && request.resource.data.importance <= 10;
+        allow delete: if isSignedIn() && isValidId(memoryId);
+      }
+
+      // Character relationships subcollection
+      match /relationships/{targetId} {
+        allow read: if true;
+        allow write: if isSignedIn()
+          && isValidId(targetId)
+          && request.resource.data.affinity is number && request.resource.data.affinity >= -100 && request.resource.data.affinity <= 100
+          && request.resource.data.trust is number && request.resource.data.trust >= 0 && request.resource.data.trust <= 100;
+      }
+    }
+
+    // World Events chronicle
+    match /events/{eventId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && isValidId(eventId)
+        && request.resource.data.headline is string && request.resource.data.headline.size() <= 250
+        && request.resource.data.details is string && request.resource.data.details.size() <= 1500;
+      allow update, delete: if false; // immutable chronicle
+    }
+  }
+}

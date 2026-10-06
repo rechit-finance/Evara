@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+/* ========================================================
+   EVARA ATMOSPHERIC LIVING WORLD THEMES
+   ======================================================== */
+
+:root {
+  --app-bg: #141210;
+  --header-bg: #191613;
+  --surface-bg: #1f1b17;
+  --card-bg: #26211c;
+  --card-hover: #302a24;
+  --card-inner: #1a1613;
+  --border-color: #3d352e;
+  --border-subtle: #2d2620;
+  --border-active: #d97706;
+  --accent-color: #d97706;
+  --accent-hover: #f59e0b;
+  --accent-text: #f59e0b;
+  --accent-contrast: #141210;
+  --badge-bg: #2d2319;
+  --badge-text: #fcd34d;
+}
+
+html[data-theme="scriptorium"],
+body[data-theme="scriptorium"],
+[data-theme="scriptorium"] {
+  --app-bg: #141210;
+  --header-bg: #191613;
+  --surface-bg: #1f1b17;
+  --card-bg: #26211c;
+  --card-hover: #302a24;
+  --card-inner: #1a1613;
+  --border-color: #3d352e;
+  --border-subtle: #2d2620;
+  --border-active: #d97706;
+  --accent-color: #d97706;
+  --accent-hover: #f59e0b;
+  --accent-text: #f59e0b;
+  --accent-contrast: #141210;
+  --badge-bg: #2d2319;
+  --badge-text: #fcd34d;
+}
+
+html[data-theme="obsidian_terminal"],
+body[data-theme="obsidian_terminal"],
+[data-theme="obsidian_terminal"] {
+  --app-bg: #050607;
+  --header-bg: #0a0c0e;
+  --surface-bg: #0f1215;
+  --card-bg: #14191e;
+  --card-hover: #1b2128;
+  --card-inner: #0b0d10;
+  --border-color: #232d36;
+  --border-subtle: #182027;
+  --border-active: #10b981;
+  --accent-color: #10b981;
+  --accent-hover: #34d399;
+  --accent-text: #34d399;
+  --accent-contrast: #050607;
+  --badge-bg: #064e3b;
+  --badge-text: #6ee7b7;
+}
+
+html[data-theme="nordic_mist"],
+body[data-theme="nordic_mist"],
+[data-theme="nordic_mist"] {
+  --app-bg: #060b13;
+  --header-bg: #0a111e;
+  --surface-bg: #0f1a2c;
+  --card-bg: #142239;
+  --card-hover: #1a2c4a;
+  --card-inner: #0a1322;
+  --border-color: #243858;
+  --border-subtle: #19273e;
+  --border-active: #14b8a6;
+  --accent-color: #14b8a6;
+  --accent-hover: #2dd4bf;
+  --accent-text: #2dd4bf;
+  --accent-contrast: #022c22;
+  --badge-bg: #134e4a;
+  --badge-text: #5eead4;
+}
+
+html[data-theme="alchemical_brass"],
+body[data-theme="alchemical_brass"],
+[data-theme="alchemical_brass"] {
+  --app-bg: #130c08;
+  --header-bg: #1a100a;
+  --surface-bg: #22150e;
+  --card-bg: #2c1c13;
+  --card-hover: #382418;
+  --card-inner: #170e09;
+  --border-color: #4a3021;
+  --border-subtle: #332116;
+  --border-active: #ea580c;
+  --accent-color: #ea580c;
+  --accent-hover: #f97316;
+  --accent-text: #fb923c;
+  --accent-contrast: #130c08;
+  --badge-bg: #431407;
+  --badge-text: #fdba74;
+}
+
+html[data-theme="lunar_starlight"],
+body[data-theme="lunar_starlight"],
+[data-theme="lunar_starlight"] {
+  --app-bg: #070714;
+  --header-bg: #0c0d20;
+  --surface-bg: #12132e;
+  --card-bg: #191b40;
+  --card-hover: #222454;
+  --card-inner: #0e0f26;
+  --border-color: #2e326b;
+  --border-subtle: #1f224b;
+  --border-active: #8b5cf6;
+  --accent-color: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-text: #c4b5fd;
+  --accent-contrast: #070714;
+  --badge-bg: #2e1065;
+  --badge-text: #d8b4fe;
+}
+
+/* Typography styles */
+[data-typography="editorial"] {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+[data-typography="technical"] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+[data-typography="minimal"] {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Global Reset & Base */
+html, body {
+  background-color: var(--app-bg) !important;
+  color: #f3f4f6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Global Dynamic Theming Classes */
+.theme-container {
+  background-color: var(--app-bg);
+  color: #f3f4f6;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.theme-header {
+  background-color: var(--header-bg);
+  border-color: var(--border-color);
+}
+
+.theme-surface {
+  background-color: var(--surface-bg);
+  border-color: var(--border-color);
+}
+
+.theme-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-card:hover {
+  background-color: var(--card-hover);
+  border-color: var(--border-active);
+}
+
+.theme-card-selected {
+  border-color: var(--border-active) !important;
+  box-shadow: 0 0 0 1px var(--border-active);
+}
+
+.theme-inner {
+  background-color: var(--card-inner);
+  border-color: var(--border-subtle);
+}
+
+.theme-border {
+  border-color: var(--border-color);
+}
+
+.theme-accent-bg {
+  background-color: var(--accent-color) !important;
+  color: var(--accent-contrast) !important;
+}
+
+.theme-accent-bg:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+.theme-accent-text {
+  color: var(--accent-text) !important;
+}
+
+.theme-accent-border {
+  border-color: var(--accent-color) !important;
+}
+
+.theme-badge {
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+  border-color: var(--border-color);
+}
+
+/* ========================================================
+   LEAFLET REAL EARTH MAP STYLES & OVERRIDES
+   ======================================================== */
+.leaflet-container {
+  font-family: inherit;
+  background-color: #0b0f19;
+  z-index: 0;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--surface-bg, #1a1613) !important;
+  color: #f3f4f6 !important;
+  border: 1px solid var(--border-color, #3d352e) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7) !important;
+  padding: 2px !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--surface-bg, #1a1613) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #94a3b8 !important;
+  font-size: 10px !important;
+  border-radius: 4px;
+}
+
+.leaflet-control-attribution a {
+  color: var(--accent-text, #f59e0b) !important;
+}
+
+.evara-char-marker {
+  transition: transform 0.2s ease;
+}
+
+.evara-char-marker:hover {
+  transform: scale(1.15);
+  z-index: 1000 !important;
+}
+
+.evara-map-tooltip {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #f8fafc !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-family: monospace !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}

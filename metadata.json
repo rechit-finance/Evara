@@ -1,0 +1,7 @@
+{
+  "name": "Evara - Living World Simulation",
+  "description": "A persistent text-based simulated world where autonomous characters live, remember, build relationships, and make validated decisions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
